@@ -13,7 +13,7 @@ class Definition:
 
     @property
     def dict(self):
-        pprint(self.__dict__)
+        return self.__dict__
 
     def analyze(self):
         pre_process = ProcessText()
