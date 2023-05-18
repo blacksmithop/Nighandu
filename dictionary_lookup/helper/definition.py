@@ -25,6 +25,12 @@ class Definition:
     def term_frequency(self, term):
         return self.term_frequencies.get(term, 0)
 
+
 if __name__ == "__main__":
-    word_def = Definition(113885, "A bird in a golden cage", "n", "സുഖകരമെങ്കിലും സ്വാതന്ത്യ്രമില്ലാത്ത അവസ്ഥ")
+    word_def = Definition(
+        113885,
+        "A bird in a golden cage",
+        "n",
+        "സുഖകരമെങ്കിലും സ്വാതന്ത്യ്രമില്ലാത്ത അവസ്ഥ",
+    )
     word_def.dict

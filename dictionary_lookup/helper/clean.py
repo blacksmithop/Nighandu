@@ -4,13 +4,40 @@ import string
 
 
 class ProcessText(object):
-    STEMMER = Stemmer.Stemmer('english')
-    PUNCTUATION = re.compile('[%s]' % re.escape(string.punctuation))
+    STEMMER = Stemmer.Stemmer("english")
+    PUNCTUATION = re.compile("[%s]" % re.escape(string.punctuation))
     # top 25 most common words in English and "wikipedia":
-    STOPWORDS = set(['the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have',
-                    'I', 'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you',
-                    'do', 'at', 'this', 'but', 'his', 'by', 'from', 'wikipedia'])
-    
+    STOPWORDS = set(
+        [
+            "the",
+            "be",
+            "to",
+            "of",
+            "and",
+            "a",
+            "in",
+            "that",
+            "have",
+            "I",
+            "it",
+            "for",
+            "not",
+            "on",
+            "with",
+            "he",
+            "as",
+            "you",
+            "do",
+            "at",
+            "this",
+            "but",
+            "his",
+            "by",
+            "from",
+            "wikipedia",
+        ]
+    )
+
     def __init__(self) -> None:
         self._text = ""
 
@@ -18,12 +45,12 @@ class ProcessText(object):
     def text(self):
         """text property"""
         return self._text
-    
+
     @text.setter
     def text(self, value):
         """text setter"""
         self._text = value
-    
+
     @text.getter
     def text(self):
         """text getter"""
@@ -36,11 +63,11 @@ class ProcessText(object):
         self.tokens = [token.lower() for token in self.tokenize()]
 
     def punctuation_filter(self):
-        self.tokens = [self.PUNCTUATION.sub('', token) for token in self.tokens]
+        self.tokens = [self.PUNCTUATION.sub("", token) for token in self.tokens]
 
     def stopword_filter(self):
         self.tokens = [token for token in self.tokens if token not in self.STOPWORDS]
-    
+
     def stem_filter(self):
         self.tokens = self.STEMMER.stemWords(self.tokens)
 
