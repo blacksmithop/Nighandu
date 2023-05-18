@@ -2,7 +2,7 @@ import pandas as pd
 from tqdm import tqdm
 
 class Data:
-    def __init__(self, file_path = "./dataset/olam-enml.csv") -> None:
+    def __init__(self, file_path: str) -> None:
         self.file_path = file_path
 
     def load(self):

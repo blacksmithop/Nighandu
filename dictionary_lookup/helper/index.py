@@ -1,16 +1,50 @@
 from .clean import ProcessText
 from .definition import Definition
+from .loaddata import Data
+
 import pandas as pd
+import pickle
 from math import log10
 from tqdm import tqdm
+from os import path
 
-
-class Index:
+class Engine:
     process = ProcessText()
 
-    def __init__(self):
+    def __init__(self, file_path: str = "./dataset/olam-enml.csv"):
         self.index = {}
         self.documents = {}
+
+        self.file_path = file_path
+
+        if not self._check_for_index_cache():
+            self._load_data()
+            self.index_document()
+            self._cache_data()
+        else:
+            print("Loading indexed dataset from memory")
+            self._load_index_cache()
+
+    def _check_for_index_cache(self):
+        return path.isfile("./dataset/olam-enml-index.pkl") and path.isfile("./dataset/olam-enml-documents.pkl")
+    
+    def _load_index_cache(self):
+        with open("./dataset/olam-enml-index.pkl", "rb") as f:
+            self.index = pickle.load(f)
+
+        with open("./dataset/olam-enml-documents.pkl", "rb") as f:
+            self.documents = pickle.load(f)
+
+    def _cache_data(self):
+        with open("./dataset/olam-enml-index.pkl", "wb") as f:
+            pickle.dump(self.index, f)
+
+        with open("./dataset/olam-enml-documents.pkl", "wb") as f:
+            pickle.dump(self.documents, f)
+
+    def _load_data(self):
+        dataframe = Data(file_path=self.file_path)
+        self.df = dataframe.load()
 
     def _index_doc(self, row: pd.Series):
         document = Definition(**row)
@@ -26,10 +60,10 @@ class Index:
                 self.index[token] = set()
             self.index[token].add(document.id)
 
-    def index_document(self, df: pd.DataFrame):
-        for i in tqdm(range(df.shape[0]), desc='Indexing dataset', ascii="░▒█"):
+    def index_document(self):
+        for i in tqdm(range(self.df.shape[0]), desc='Indexing dataset', ascii="░▒█"):
             try:
-                self._index_doc(df.loc[i])
+                self._index_doc(self.df.loc[i])
             except AttributeError:
                 continue
 
