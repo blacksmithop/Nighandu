@@ -1,13 +1,9 @@
 from dictionary_lookup.helper.loaddata import Data
-from dictionary_lookup.helper.index import Index
+from dictionary_lookup.helper.index import Engine
 from sys import exit
 
 
-df = Data().load()
-
-index = Index()
-
-index.index_document(df=df)
+index = Engine()
 
 while True:
     try:
