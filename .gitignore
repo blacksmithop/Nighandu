@@ -1,0 +1,7 @@
+**\__pycache__
+notebooks
+*.ipynb
+.venv
+olam-enml
+packages
+*.xlsx
