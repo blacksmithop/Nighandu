@@ -11,12 +11,16 @@ from os import path
 
 class Engine:
     process = ProcessText()
+    GITHUB_HOSTED_URL = "https://raw.githubusercontent.com/blacksmithop/Nighandu/main/dataset/olam-enml.csv"
 
-    def __init__(self, file_path: str = "./dataset/olam-enml.csv"):
+    def __init__(self, file_path: str = "./dataset/olam-enml.csv", download=False):
         self.index = {}
         self.documents = {}
 
-        self.file_path = file_path
+        if download:
+            self.file_path = self.GITHUB_HOSTED_URL
+        else:
+            self.file_path = file_path
 
         if not self._check_for_index_cache():
             self._load_data()
@@ -47,6 +51,7 @@ class Engine:
 
     def _load_data(self):
         dataframe = Data(file_path=self.file_path)
+
         self.df = dataframe.load()
 
     def _index_doc(self, row: pd.Series):

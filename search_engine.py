@@ -2,14 +2,12 @@ import gradio as gr
 from dictionary_lookup.helper.index import Engine
 from json import dumps
 
-engine = Engine()
+engine = Engine(download=False)  # True if you want load dataset from github
 
 
 def show_search_result(query):
     resp = engine.search(query=query)
     result = resp[0][0].dict
-
-    print(result)
 
     result["id"] = int(result["id"])
 
