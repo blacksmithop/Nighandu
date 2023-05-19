@@ -13,7 +13,9 @@ class Engine:
     process = ProcessText()
     GITHUB_HOSTED_URL = "https://raw.githubusercontent.com/blacksmithop/Nighandu/main/dataset/olam-enml.csv"
 
-    def __init__(self, file_path: str = "./dataset/olam-enml.csv", download=False):
+    def __init__(
+        self, file_path: str = "./dataset/olam-enml.csv", download: bool = False
+    ):
         self.index = {}
         self.documents = {}
 
@@ -22,10 +24,16 @@ class Engine:
         else:
             self.file_path = file_path
 
-        if not self._check_for_index_cache():
-            self._load_data()
-            self.index_document()
-            self._cache_data()
+        if not self._check_for_index_cache() or download:
+            if path.isfile("./dataset/olam-enml.csv"):
+                print("Dataset file found")
+            else:
+                self._load_data()
+            if self._check_for_index_cache():
+                print("Index cache found")
+            else:
+                self.index_document()
+                self._cache_data()
         else:
             print("Loading indexed dataset from memory")
             self._load_index_cache()
@@ -50,6 +58,7 @@ class Engine:
             pickle.dump(self.documents, f)
 
     def _load_data(self):
+        print(self.file_path)
         dataframe = Data(file_path=self.file_path)
 
         self.df = dataframe.load()

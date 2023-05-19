@@ -2,7 +2,7 @@ import gradio as gr
 from dictionary_lookup.helper.index import Engine
 from json import dumps
 
-engine = Engine(download=False)  # True if you want load dataset from github
+engine = Engine(download=True)  # True if you want load dataset from github
 
 
 def show_search_result(query):
