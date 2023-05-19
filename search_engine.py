@@ -9,9 +9,11 @@ def show_search_result(query):
     resp = engine.search(query=query)
     result = resp[0][0].dict
 
+    print(result)
+
     result["id"] = int(result["id"])
 
-    return dumps(result, indent=4)
+    return dumps(result, indent=4, ensure_ascii=False).encode("utf8")
 
 
 search_engine = gr.Interface(
